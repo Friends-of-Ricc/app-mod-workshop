@@ -29,9 +29,12 @@ import pymysql.cursors
 
 
 
-# Replace with your project ID
+# Replace with your project ID Replace
 #PROJECT_ID = "your-project-id"
 PROJECT_ID='ricc-demos-386214'
+# Replace with your GCP_REGION if you have build for a specific Region
+GCP_REGION='us-central1'
+
 GEMINI_MODEL = "gemini-1.5-pro-002"
 DEFAULT_PROMPT = "Generate a caption for this image: "
 #DEFAULT_PROMPT2 = "What is shown in this image?"
@@ -44,7 +47,7 @@ def gemini_describe_image_from_gcs(gcs_url, image_prompt=DEFAULT_PROMPT):
     '''This is currently working great.'''
 
     # TODO auto-detect project id
-    aiplatform.init(project=PROJECT_ID, location="us-central1")
+    aiplatform.init(project=PROJECT_ID, location=GCP_REGION)
     # Generate a caption using Gemini
     model = GenerativeModel(GEMINI_MODEL) # "gemini-1.5-pro"?
 
@@ -145,15 +148,9 @@ def generate_caption(event, context):
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(file_name)
     print(f"Blob: {blob}")
-#    public_url = blob.public_url
-    public_url  blob.public_url
+    public_url = blob.public_url
     print(f"Blob public URL: {public_url}")
-<<<<<<< HEAD
-    gcs_full_url = f"gs://{bucket_name}/{file_name}"
-    print(f"[GCFv{GCF_VERSION}] GCS full URL: {gcs_full_url}")
 
-    caption = gemini_describe_image_from_gcs(gcs_full_url)
-=======
     gsutil_object_url = f"gs://{bucket_name}/{file_name}"
     print(f"gsutil_object_url: {gsutil_object_url}")
 
@@ -186,7 +183,6 @@ def generate_caption(event, context):
 
 #     # Extract the caption from the response
 #     caption = response.predictions[0]['candidates'][0]['content']
->>>>>>> fa19cf1 ( new code)
 
     # Print the caption (you can also store it or use it as needed)
     print(f"[GCFv{GCF_VERSION}] Generated caption: {caption}")
