@@ -1,3 +1,5 @@
+
+
 # Use the official PHP image.
 # https://hub.docker.com/_/php
 FROM php:5.6-apache
@@ -23,7 +25,7 @@ RUN set -ex; \
 
 # Copy in custom code from the host machine.
 WORKDIR /var/www/html
-# ./ /var/www/html
+
 COPY . .
 
 # Use the PORT environment variable in Apache configuration files.
