@@ -77,6 +77,7 @@ def update_db_with_description(
     image_db_filename = f"uploads/{image_filename}"
 
     conn = None
+    cursor = None
 
     try:
         print(f"update_db_with_description(): Connecting to '{db_name}' DB @{db_host}...")
@@ -107,8 +108,9 @@ def update_db_with_description(
 
     finally:
         # Close the connection
-        if conn:
+        if cursor:
             cursor.close()
+        if conn:
             conn.close()
 
 
