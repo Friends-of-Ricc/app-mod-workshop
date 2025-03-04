@@ -2,17 +2,16 @@
 
 '''Documentation:
 
-
-* Vertex:
 * AI Studio: https://ai.google.dev/gemini-api/docs/vision
 
+v0.8  4mar25 ricc - unbroke the code.
 v0.7 30oct24 Ipsale - Ipsale bugfix.
 v0.6 30oct24 ricc - DB with Fantastic 4 ENVs.
 v0.5 30oct24 ricc - DB integration seems to work.
 v0.4 30oct24 ricc - finally it works! pushing and cleaning up
 v0.3 ??oct24 ricc - Public URL changed
 '''
-GCF_VERSION = '0.7'
+GCF_VERSION = '0.8'
 
 
 VERSION= '0.3'
@@ -36,9 +35,6 @@ GEMINI_MODEL = "gemini-1.5-pro-002"
 DEFAULT_PROMPT = "Generate a caption for this image: "
 #DEFAULT_PROMPT2 = "What is shown in this image?"
 
-# def gemini_describe_image_from_local_file(base64_image, image_prompt=DEFAULT_PROMPT):
-#     '''This is currently broken..'''
-#     raise "TODO"
 
 def gemini_describe_image_from_gcs(gcs_url, image_prompt=DEFAULT_PROMPT):
     '''This is currently working great.'''
@@ -145,48 +141,14 @@ def generate_caption(event, context):
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(file_name)
     print(f"Blob: {blob}")
-#    public_url = blob.public_url
-    public_url  blob.public_url
+    public_url = blob.public_url
     print(f"Blob public URL: {public_url}")
-<<<<<<< HEAD
+
+    # Use the HEAD version which uses gcs_full_url
     gcs_full_url = f"gs://{bucket_name}/{file_name}"
     print(f"[GCFv{GCF_VERSION}] GCS full URL: {gcs_full_url}")
 
     caption = gemini_describe_image_from_gcs(gcs_full_url)
-=======
-    gsutil_object_url = f"gs://{bucket_name}/{file_name}"
-    print(f"gsutil_object_url: {gsutil_object_url}")
-
-    # image_bytes = blob.download_as_bytes()
-
-    # # Encode the image in base64
-    # base64_image = base64.b64encode(image_bytes).decode('utf-8')
-
-    # prompt = "Generate a caption for this image: "
-    # caption = gemini_describe_image(base64_image, prompt)
-    caption = gemini_describe_image_from_gcs(gsutil_object_url)
-
-#     # Generate a caption using Gemini
-#     aiplatform.init(project=PROJECT_ID, location="us-central1")
-#     response = aiplatform.execute_model(
-# #        model="gemini-1.5-pro-001",  # Replace with the desired Gemini model
-#         model="gemini-1.5-pro",  # Replace with the desired Gemini model
-#         instances=[
-#             {
-#                 "prompt": f"Generate a caption for this image: ",
-#                 "images": [
-#                     {
-#                         "data": base64_image,
-#                         "mime_type": "image/jpeg"  # Replace with the actual MIME type
-#                     }
-#                 ]
-#             }
-#         ]
-#     )
-
-#     # Extract the caption from the response
-#     caption = response.predictions[0]['candidates'][0]['content']
->>>>>>> fa19cf1 ( new code)
 
     # Print the caption (you can also store it or use it as needed)
     print(f"[GCFv{GCF_VERSION}] Generated caption: {caption}")
